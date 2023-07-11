@@ -28,7 +28,7 @@ jobs:
         id: decode_keystore
         uses: timheuer/base64-to-file@v1.2
         with:
-          fileName: 'android_keystore.jks'
+          fileName: 'pagination.jks'
           fileDir: '/home/runner/work/<<project name>>/<<project name>>/app/keystore/'
           encodedString: ${{ secrets.KEYSTORE }}
 
