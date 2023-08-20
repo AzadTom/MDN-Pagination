@@ -12,7 +12,7 @@ import com.example.tmdb.databinding.MovieItemBinding
 import com.example.tmdb.model.Movie
 import com.example.tmdb.util.Utils.IMAGE_BASE_URL
 
-class MovieAdapter:PagingDataAdapter<Movie,MovieAdapter.MovieViewholder>(Comparator) {
+class MovieAdapter(private  val detail: Detail):PagingDataAdapter<Movie,MovieAdapter.MovieViewholder>(Comparator) {
 
     class MovieViewholder(itemview: MovieItemBinding) : RecyclerView.ViewHolder(itemview.root) {
 
@@ -48,8 +48,19 @@ class MovieAdapter:PagingDataAdapter<Movie,MovieAdapter.MovieViewholder>(Compara
         movie?.let {
 
 
-            holder.thumnail.load("${IMAGE_BASE_URL}${it.poster_path}")
+            holder.thumnail.load("${IMAGE_BASE_URL}${it.poster_path}"){
+                crossfade(750)
+                build()
+            }
             holder.moviename.text = it.title
+
+            holder.itemView.setOnClickListener { view ->
+
+                detail.getData(it)
+
+            }
+
+
 
 
         }
@@ -67,4 +78,10 @@ class MovieAdapter:PagingDataAdapter<Movie,MovieAdapter.MovieViewholder>(Compara
         return MovieViewholder(movieItemBinding)
 
     }
+}
+
+interface  Detail {
+
+    fun getData(movie:Movie)
+
 }

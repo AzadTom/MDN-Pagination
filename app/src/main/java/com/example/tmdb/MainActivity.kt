@@ -1,5 +1,6 @@
 package com.example.tmdb
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.widget.Toast
@@ -9,16 +10,18 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.tmdb.adapter.Detail
 import com.example.tmdb.adapter.MovieAdapter
 import com.example.tmdb.adapter.MoviePageLoadStateAdapter
 import com.example.tmdb.databinding.ActivityMainBinding
+import com.example.tmdb.model.Movie
 import com.example.tmdb.viewmodel.MovieViewmodel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() , Detail {
     private lateinit var binding: ActivityMainBinding
 
 
@@ -33,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.hide()
+
 
 
         setUpRecyclerView()
@@ -46,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpRecyclerView() {
 
-        adapter = MovieAdapter()
+        adapter = MovieAdapter(this)
         headerOrFooter = MoviePageLoadStateAdapter { adapter.retry() }
 
         val concatAdapter  = adapter.withLoadStateFooter(
@@ -135,6 +138,15 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "No internet Connection", Toast.LENGTH_SHORT).show()
 
         }
+    }
+
+    override fun getData(movie: Movie) {
+
+
+        val intent = Intent(this,DetailActivity::class.java)
+        intent.putExtra("movie",movie)
+        startActivity(intent)
+
     }
 
 
