@@ -1,0 +1,34 @@
+name: Android Release
+
+on:
+  release:
+    types:
+      - created
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+
+      - name: Build and sign APK
+        run: |
+          ./gradlew bundleRelease --no-daemon --quiet
+        env:
+          KEYSTORE_PATH: ${{ secrets.SIGNING_KEY_STORE_PATH }}
+          KEYSTORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      - name: Upload Release APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-apk
+          path: app/build/outputs/bundle/release/app-release.aab
