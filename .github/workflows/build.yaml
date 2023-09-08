@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build & Release
 on:
   push:
     branches: master
@@ -59,7 +59,7 @@ on:
           name: release-artifacts
           paths: |
             app/build/outputs/apk/release/
-            app/build/outputs/bundle/release/
+
       #4
       - name: Create Github Release
         uses: softprops/action-gh-release@v1
@@ -68,4 +68,3 @@ on:
           prerelease: true
           files: |
             app/build/outputs/apk/release/app-release.apk
-            app/build/outputs/bundle/release/app-release.aab
