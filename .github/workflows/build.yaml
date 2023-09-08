@@ -5,8 +5,7 @@ on:
     tags:
       - v*
 
-  jobs:
-    build:
+  release_build:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
 
